@@ -1,16 +1,18 @@
 import { db } from "../config/db.js";
 import { orders, orderItems } from "../models/order.js";
 import { products } from "../models/product.js";
+import { eq } from "drizzle-orm";
+import { cart } from "../models/cart.js";
 
 // Create new order
 export const checkout = async (req, res) => {
   try {
-    const cartItems = await db.select().from(cart).where(cart.userId.eq(req.user.id));
+    const cartItems = await db.select().from(cart).where(eq(cart.userId, req.user.id));
     if (cartItems.length === 0) return res.status(400).json({ message: "Cart is empty" });
 
     let total = 0;
     for (const item of cartItems) {
-      const [product] = await db.select().from(products).where(products.id.eq(item.productId));
+      const [product] = await db.select().from(products).where(eq(products.id, item.productId));
       total += parseFloat(product.price) * item.quantity;
     }
 
@@ -21,7 +23,7 @@ export const checkout = async (req, res) => {
     }).returning();
 
     for (const item of cartItems) {
-      const [product] = await db.select().from(products).where(products.id.eq(item.productId));
+      const [product] = await db.select().from(products).where(eq(products.id, item.productId));
       await db.insert(orderItems).values({
         orderId: newOrder.id,
         productId: item.productId,
@@ -31,7 +33,7 @@ export const checkout = async (req, res) => {
     }
 
     // clear cart after checkout
-    await db.delete(cart).where(cart.userId.eq(req.user.id));
+    await db.delete(cart).where(eq(cart.userId, req.user.id));
 
     res.status(201).json({ message: "Order created from cart", order: newOrder });
   } catch (err) {
@@ -43,7 +45,7 @@ export const checkout = async (req, res) => {
 // Get all orders for logged-in user
 export const getUserOrders = async (req, res) => {
   try {
-    const userOrders = await db.select().from(orders).where(orders.userId.eq(req.user.id));
+    const userOrders = await db.select().from(orders).where(eq(orders.userId, req.user.id));
     res.json(userOrders);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -67,7 +69,7 @@ export const updateOrderStatus = async (req, res) => {
     const [updatedOrder] = await db
       .update(orders)
       .set({ status })
-      .where(orders.id.eq(parseInt(req.params.id)))
+      .where(eq(orders.id, parseInt(req.params.id)))
       .returning();
 
     if (!updatedOrder) return res.status(404).json({ message: "Order not found" });

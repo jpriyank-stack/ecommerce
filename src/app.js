@@ -1,26 +1,20 @@
-// src/app.jsconst 
 import express from 'express';
 import cors from 'cors';
 import userRoutes from './routes/user.js';
-import productRoutes from  './routes/product.js';
+import productRoutes from './routes/product.js';
+import cartRoutes from './routes/cart.js';
+import orderRoutes from './routes/order.js';
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
-
-// Example route
-app.get('/', (req, res) => {
-  res.send('E-commerce backend is running 🚀');
-});
-
+app.use(express.static('public')); // Serve frontend files
 
 app.use('/api/users', userRoutes);
-app.use("/api/products", productRoutes);
-
-
-
-
+app.use('/api/products', productRoutes);
+app.use('/api/cart', cartRoutes);
+app.use('/api/orders', orderRoutes);
 
 export default app;

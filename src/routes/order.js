@@ -4,9 +4,9 @@ import {
   getUserOrders,
   getAllOrders,
   updateOrderStatus,
-} from "../controllers/orderController.js";
-import { authMiddleware } from "../middleware/auth.js";
-import { adminMiddleware } from "../middleware/admin.js";
+} from "../controller/orderController.js";
+import authMiddleware  from "../middleware/auth.js";
+import adminMiddleware from "../middleware/admin.js";
 
 const router = express.Router();
 
