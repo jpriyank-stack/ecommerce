@@ -12,6 +12,15 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public')); // Serve frontend files
 
+
+app.get("/health", (req, res) => {
+    return res.status(200).json({
+        success: true,
+        message: "Ecommerce server is running perfectly..."
+    })
+});
+
+
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
