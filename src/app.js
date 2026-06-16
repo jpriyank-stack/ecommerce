@@ -19,10 +19,10 @@ app.use(express.static('public'));
 app.use(morgan('dev'));
 
 // ========== Health Check ==========
-app.get("/health", (req, res) => {
+app.get('/health', (req, res) => {
     return res.status(200).json({
         success: true,
-        message: "Ecommerce server is running perfectly...",
+        message: 'Ecommerce server is running perfectly...',
         timestamp: new Date()
     });
 });
@@ -46,7 +46,7 @@ app.use((err, req, res, next) => {
     console.error('Error:', err);
     return res.status(err.status || 500).json({
         success: false,
-        message: err.message || "Internal server error",
+        message: err.message || 'Internal server error',
         ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
     });
 });

@@ -1,5 +1,5 @@
 // src/middleware/upload.js
-import multer from "multer";
+import multer from 'multer';
 
 const storage = multer.memoryStorage(); // keep file in memory buffer
 const upload = multer({ storage });

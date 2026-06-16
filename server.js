@@ -8,5 +8,5 @@ const PORT = process.env.PORT; // Default port if not set in .env
 // Start the server
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
 });
