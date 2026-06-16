@@ -39,8 +39,8 @@ jobs:
       - name: Run tests
         run: npm test --if-present
   
-  # ========== JOB 2: BUILD DOCKER IMAGE ==========
-  build:
+  # ========== JOB 2: BUILD & PUSH DOCKER IMAGE ==========
+  build-and-push:
     needs: test  # Only run if test job passes
     runs-on: ubuntu-latest
     
@@ -69,13 +69,14 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:latest
             ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:${{ github.sha }}
+          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:buildcache,mode=max
   
-  # ========== JOB 3: DEPLOY (Optional) ==========
-  deploy:
-    needs: build  # Only run if build job passes
+  # ========== JOB 3: NOTIFY (Optional) ==========
+  notify:
+    needs: build-and-push
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     
     steps:
-      - name: Deploy notification
-        run: echo "✅ Deployment would happen here"
+      - name: Success Notification
+        run: echo "✅ CI/CD Pipeline completed successfully!"

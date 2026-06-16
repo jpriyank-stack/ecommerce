@@ -4,3 +4,10 @@ npm-debug.log
 .git
 .gitignore
 README.md
+.DS_Store
+.github
+tests
+coverage
+.eslintrc.json
+jest.config.js
+babel.config.js
