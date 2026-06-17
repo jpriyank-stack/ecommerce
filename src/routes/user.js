@@ -1,6 +1,15 @@
-import {getUsers, getUserById, getProfile, markAdmin, updateProfile, deleteUser, loginUser, signupUser} from '../controller/userController.js';
+import {
+    getUsers,
+    getUserById,
+    getProfile,
+    markAdmin,
+    updateProfile,
+    deleteUser,
+    loginUser,
+    signupUser
+} from '../controller/userController.js';
 import express from 'express';
-const router = express.Router(); 
+const router = express.Router();
 import authMiddleware from '../middleware/auth.js';
 import adminMiddleware from '../middleware/admin.js';
 

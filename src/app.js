@@ -42,7 +42,7 @@ app.use((req, res) => {
 });
 
 // ========== Error Handler ==========
-app.use((err, req, res, next) => {
+app.use((err, req, res, _next) => {
     console.error('Error:', err);
     return res.status(err.status || 500).json({
         success: false,
