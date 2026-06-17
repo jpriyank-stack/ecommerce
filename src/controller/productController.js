@@ -1,6 +1,8 @@
 import { db } from '../config/db.js';
 import { products } from '../models/product.js';
-import supabase from '../config/supabase.js';
+import { getSupabaseClient } from '../config/supabase.js';
+
+ const supabase = getSupabaseClient();
 
 // Controller functions
 export const getProducts = async (req, res) => {
@@ -25,9 +27,6 @@ export const getProductById = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
-
-
-
 
 export const createProduct = async (req, res) => {
     try {
@@ -72,9 +71,6 @@ export const createProduct = async (req, res) => {
         res.status(400).json({ error: err.message });
     }
 };
-
-
-
 
 export const updateProduct = async (req, res) => {
     try {
